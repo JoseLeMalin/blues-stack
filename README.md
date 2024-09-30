@@ -35,7 +35,7 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
 ## Development
 
 - First run this stack's `remix.init` script and commit the changes it makes to your project.
-
+- --> cd remix.init ==> pnpm install all dependences --> cd .. (root of the directory) ==> npx run remix.init
   ```sh
   npx remix init
   git init # if you haven't already
@@ -52,13 +52,14 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
   > **Note:** The npm script will complete while Docker sets up the container in the background. Ensure that Docker has finished and your container is running before proceeding.
 
 - Initial setup:
+- Retarded script remix init doesn't work ==>  create a .env file that copies the .env.example
 
   ```sh
   npm run setup
   ```
 
 - Run the first build:
-
+- Update package.json at root  with "type": "module" => Switch from module.exports to export default
   ```sh
   npm run build
   ```

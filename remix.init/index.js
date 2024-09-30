@@ -233,4 +233,4 @@ Setup is almost complete. Follow these steps to finish initialization:
   );
 };
 
-module.exports = main;
+export default main;

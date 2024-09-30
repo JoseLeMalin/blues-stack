@@ -7,6 +7,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  cacheDir: "../../node_modules/.vitest",
   test: {
     globals: true,
     environment: "happy-dom",
