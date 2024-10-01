@@ -63,7 +63,7 @@ Click this button to create a [Gitpod](https://gitpod.io) workspace with the pro
   ```sh
   npm run build
   ```
-
+- Change the import of tailwind.css in root.tsx by: import stylesheet from "../app/tailwind.css?url";
 - Start dev server:
 
   ```sh
