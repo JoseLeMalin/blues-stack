@@ -1,6 +1,6 @@
 import type { Password, User } from "@prisma/client";
 import { prisma } from "../db.server";
-import { hashPassword, verifyPassword } from "../utils/crypto.node";
+import { hashPassword, verifyPassword } from "@/utils/crypto.node";
 
 export type { User } from "@prisma/client";
 
