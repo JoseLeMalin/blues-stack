@@ -24,7 +24,7 @@ export async function getUserByEmail(email: User["email"]) {
   /* return prisma.user.findUnique({ where: { email } }); */
   const client = await pool.connect();
   const result = await client.query<User>(
-    `SELECT u."id",u."email",u."createdAt",u."updatedAt" FROM "User" WHERE u."email" = $1`,
+    `SELECT id,email,createdAt,updatedAt FROM "User" WHERE email = $1`,
     [email],
   );
 
@@ -37,12 +37,11 @@ export async function getUserByEmail(email: User["email"]) {
 export async function getUserByEmailWithPassword(email: User["email"]) {
   type test = User & {
     hash: string;
-    userId: string;
   };
   /* return prisma.user.findUnique({ where: { email } }); */
   const client = await pool.connect();
   const result = await client.query<test>(
-    `SELECT u."email",u."createdAt",u."updatedAt",p."hash", p."userId" FROM "User" u JOIN "Password" p ON p."userId" = u.id WHERE email = $1 LIMIT 1;`,
+    `SELECT u."id", u."email",u."createdAt",u."updatedAt",p."hash" FROM "User" u JOIN "Password" p ON p."userId" = u.id WHERE email = $1 LIMIT 1;`,
     [email],
   );
 
@@ -60,20 +59,14 @@ export async function createUser(email: User["email"], password: string) {
     `"INSERT INTO "User" (email, password) VALUES ($1, $2)"`,
     [email, hashedPassword],
   );
-  /* return prisma.user.create({
-    data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
-    },
-  }); */
 }
 
 export async function deleteUserByEmail(email: User["email"]) {
-  /* return prisma.user.delete({ where: { email } }); */
+  const client = await pool.connect();
+  const result = await client.query<User>(
+    `DELETE FROM "User" WHERE email = $1`,
+    [email],
+  );
 }
 
 export async function verifyLogin(
@@ -89,7 +82,6 @@ export async function verifyLogin(
   if (!isValid) return null;
 
   const { hash: _password, ...userWithoutPassword } = userWithPassword;
-  console.log("userwithoutpassword: ", userWithoutPassword);
 
   return userWithoutPassword;
 }

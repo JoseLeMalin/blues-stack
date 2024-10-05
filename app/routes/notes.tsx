@@ -8,7 +8,6 @@ import { useUser } from "@/utils/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
-  console.log("loader notes userid: ", userId);
 
   const noteListItems = await getNoteListItems({ userId });
 
