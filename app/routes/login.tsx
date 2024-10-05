@@ -53,12 +53,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       { status: 400 },
     );
   }
+  user.id = user?.userId;
 
   return createUserSession({
     redirectTo,
     remember: remember === "on" ? true : false,
     request,
-    userId: user.id,
+    userId: user.userId,
   });
 };
 

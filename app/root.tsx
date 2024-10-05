@@ -18,7 +18,8 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return json({ user: await getUser(request) });
+  const user = await getUser(request);
+  return json({ user });
 };
 
 export default function App() {
