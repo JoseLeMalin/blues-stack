@@ -5,20 +5,23 @@ import dayjs from "dayjs";
 
 type Vote = {
   id: string;
-  value: string;
+  vote: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
 };
 
 export const createVote = async ({
-  value,
+  vote,
   userId,
-}: Pick<Vote, "value"> & {
+}: Pick<Vote, "vote"> & {
   userId: User["id"];
 }) => {
   const client = await pool.connect();
   const voteId = v4();
   await client.query<Vote>(
-    `INSERT INTO "Note" ("id", "createdAt", "updatedAt", "userId") VALUES ($1, $2, $3, $4);`,
-    [voteId, dayjs().toISOString(), dayjs().toISOString(), userId],
+    `INSERT INTO "Vote" ("id", "vote", "createdAt", "updatedAt", "userId") VALUES ($1, $2, $3, $4, $5);`,
+    [voteId, vote, dayjs().toISOString(), dayjs().toISOString(), userId],
   );
   client.release();
 

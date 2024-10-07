@@ -1,6 +1,8 @@
 import type { Password, User } from "@prisma/client";
 import { hashPassword, verifyPassword } from "@/utils/crypto.node";
 import pool from "@/db.server";
+import { v4 } from "uuid";
+import dayjs from "dayjs";
 
 export type { User } from "@prisma/client";
 
@@ -52,21 +54,28 @@ export async function getUserByEmailWithPassword(email: User["email"]) {
   return result.rows[0];
 }
 
-export async function createUser(email: User["email"], password: string) {
+export const createUser = async (email: User["email"], password: string) => {
+  const newUserId = v4();
   const hashedPassword = await hashPassword(password);
   const client = await pool.connect();
-  const result = await client.query<User>(
-    `"INSERT INTO "User" (email, password) VALUES ($1, $2)"`,
-    [email, hashedPassword],
+  await client.query<User>(
+    `INSERT INTO "User" (id, email, createdAt,updatedAt) VALUES ($1, $2, $3, $4)`,
+    [newUserId, email, dayjs().toISOString(), dayjs().toISOString()],
   );
-}
+  await client.query<Password>(
+    `INSERT INTO "Password" (hash, userId) VALUES ($1, $2)`,
+    [hashedPassword, newUserId],
+  );
+
+  client.release();
+  const newUser = await getUserById(newUserId);
+
+  return newUser;
+};
 
 export async function deleteUserByEmail(email: User["email"]) {
   const client = await pool.connect();
-  const result = await client.query<User>(
-    `DELETE FROM "User" WHERE email = $1`,
-    [email],
-  );
+  await client.query<User>(`DELETE FROM "User" WHERE email = $1`, [email]);
 }
 
 export async function verifyLogin(
