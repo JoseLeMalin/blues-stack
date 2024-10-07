@@ -31,6 +31,7 @@
     "/postgres-data"
   ],
   "dependencies": {
+    "@apollo/client": "^3.11.8",
     "@babel/plugin-syntax-decorators": "^7.24.7",
     "@isaacs/express-prometheus-middleware": "^1.2.1",
     "@prisma/client": "^5.19.1",
@@ -44,6 +45,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.13",
     "express": "^4.20.0",
+    "graphql": "^16.9.0",
     "isbot": "^5.1.17",
     "morgan": "^1.10.0",
     "pg": "^8.13.0",

@@ -20,7 +20,7 @@ export const createVote = async ({
   const client = await pool.connect();
   const voteId = v4();
   await client.query<Vote>(
-    `INSERT INTO "Vote" ("id", "vote", "createdAt", "updatedAt", "userId") VALUES ($1, $2, $3, $4, $5);`,
+    `INSERT INTO "Vote" (id, vote, "createdAt", "updatedAt", "userId") VALUES ($1, $2, $3, $4, $5);`,
     [voteId, vote, dayjs().toISOString(), dayjs().toISOString(), userId],
   );
   client.release();
@@ -36,7 +36,7 @@ export const getVote = async ({
 }) => {
   const client = await pool.connect();
   const result = await client.query<Vote>(
-    `SELECT id,value FROM "Vote" WHERE "id" = $1 AND "userId" = $2 LIMIT 1;`,
+    `SELECT id,vote FROM "Vote" WHERE "id" = $1 AND "userId" = $2 LIMIT 1;`,
     [id, userId],
   );
   client.release();
@@ -47,7 +47,7 @@ export const getVote = async ({
 export const getVoteListItems = async ({ userId }: { userId: User["id"] }) => {
   const client = await pool.connect();
   const result = await client.query<Vote>(
-    `SELECT id, value FROM "Vote" WHERE "userId" = $1 ORDER BY "updatedAt" DESC;`,
+    `SELECT id, vote FROM "Vote" WHERE "userId" = $1 ORDER BY "updatedAt" DESC;`,
     [userId],
   );
   client.release();

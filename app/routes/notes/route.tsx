@@ -2,8 +2,8 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
-import { getNoteListItems } from "../models/note.server";
-import { requireUserId } from "../session.server";
+import { getNoteListItems } from "../../models/note.server";
+import { requireUserId } from "../../session.server";
 import { useUser } from "@/utils/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -21,9 +21,16 @@ export default function NotesPage() {
   return (
     <div className="flex h-full min-h-screen flex-col">
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
-        </h1>
+        <div className="flex">
+          <h1 className="flex text-3xl font-bold">
+            <div className="flex-1 p-2">
+              <Link to=".">Notes</Link>
+            </div>
+            <div className="flex-1 p-2">
+              <Link to="/votes">Vote</Link>
+            </div>
+          </h1>
+        </div>
         <p>{user.email}</p>
         <Form action="/logout" method="post">
           <button
